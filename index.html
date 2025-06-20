@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RENIEL & EMPEROR DATE</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #e63946;
+      margin-bottom: 0;
+    }
+    #username-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    #username {
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 200px;
+      font-size: 1rem;
+    }
+    #submit-btn {
+      padding: 10px 20px;
+      background-color: #f1faee;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+    #submit-btn:hover {
+      background-color: #e63946;
+      color: white;
+    }
+    #greeting {
+      font-size: 1.25rem;
+      margin-bottom: 16px;
+      color: #e63946;
+      font-weight: 600;
+    }
+    #logged-in-list {
+      max-width: 400px;
+      width: 100%;
+      margin-bottom: 30px;
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 3px 8px rgba(230,57,70,0.2);
+    }
+    #logged-in-list h3 {
+      margin-top: 0;
+      color: #a41623;
+    }
+    #logged-in-list ul {
+      list-style: none;
+      margin: 0;
+      padding-left: 20px;
+    }
+    #logged-in-list li {
+      margin-bottom: 6px;
+      color: #333;
+      font-weight: 500;
+    }
+    #story {
+      display: none;
+      max-width: 600px;
+      text-align: center;
+      margin-top: 20px;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    #story h2 {
+      margin-top: 0;
+      color: #e63946;
+    }
+    p {
+      text-align: left;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Welcome to RENIEL & EMPEROR DATE</h1>
+
+  <div id="username-form">
+    <input type="text" id="username" placeholder="Enter your username" autocomplete="off" required />
+    <button id="submit-btn">Submit</button>
+  </div>
+
+  <div id="greeting" aria-live="polite"></div>
+
+  <section id="logged-in-list" aria-label="List of logged in users">
+    <h3>Users Logged In This Session</h3>
+    <ul id="logged-users"></ul>
+  </section>
+
+  <div id="story" role="main" tabindex="-1" aria-label="Love story of Reniel and Emperor">
+    <h2>A Simple Love</h2>
+    <p>At <strong>St. John’s Grammar SHS</strong>, <strong>Michael</strong> was just a regular Form 3 student. Nothing fancy—no position, no popularity. He liked to keep to himself, chill with his friends, and pass his papers. Then came <strong>Samira</strong>, a bright and beautiful Form 2 girl with the kind of smile that could silence a room.</p>
+    <p>They first spoke when Michael bumped into her at the canteen line. She dropped her meat pie, and he offered his own without thinking. “Thanks,” she said, surprised. “No problem,” Michael shrugged, smiling awkwardly. “Meat pie’s overrated anyway.”</p>
+    <p>After that, they started talking more. A wave here, a quick chat after prep, and sometimes, when the teachers weren’t looking, a shared seat during group studies.</p>
+    <p>Michael never had big words or fancy moves—he just listened, made her laugh, and showed up. That was enough.</p>
+    <p>One quiet afternoon, under the tree behind the library, Samira looked at him and said, “You know, I feel safe with you.”</p>
+    <p>Michael didn’t say much. He just smiled and nodded. That was the moment he knew—it wasn’t about being perfect. It was about being real.</p>
+    <p>And from that day, even in the midst of exams, strict teachers, and noisy dorms, something simple but strong began between them.</p>
+    <p>A love that didn’t need titles—just two hearts that understood each other.</p>
+  </div>
+
+  <script>
+    (() => {
+      const usernameInput = document.getElementById('username');
+      const submitBtn = document.getElementById('submit-btn');
+      const greetingDiv = document.getElementById('greeting');
+      const loggedUsersUl = document.getElementById('logged-users');
+      const storyDiv = document.getElementById('story');
+      const usernameForm = document.getElementById('username-form');
+
+      // Get logged users from sessionStorage or initialize empty array
+      const loggedInUsers = JSON.parse(sessionStorage.getItem('loggedInUsers') || '[]');
+
+      // Function to update the displayed logged users list
+      const updateLoggedUsersList = () => {
+        loggedUsersUl.innerHTML = '';
+        if (loggedInUsers.length === 0) {
+          loggedUsersUl.innerHTML = '<li>No users logged in yet this session.</li>';
+        } else {
+          loggedInUsers.forEach(user => {
+            const li = document.createElement('li');
+            li.textContent = user;
+            loggedUsersUl.appendChild(li);
+          });
+        }
+      };
+
+      updateLoggedUsersList();
+
+      submitBtn.addEventListener('click', () => {
+        const username = usernameInput.value.trim();
+        if (!username) {
+          alert('Please enter a username.');
+          usernameInput.focus();
+          return;
+        }
+
+        // Greet user
+        greetingDiv.textContent = `Hello, ${username}! Welcome to RENIEL & EMPEROR DATE.`;
+
+        // Add to logged in users if not already added
+        if (!loggedInUsers.includes(username)) {
+          loggedInUsers.push(username);
+          sessionStorage.setItem('loggedInUsers', JSON.stringify(loggedInUsers));
+          updateLoggedUsersList();
+        }
+
+        // Show story and hide input form
+        usernameForm.style.display = 'none';
+        storyDiv.style.display = 'block';
+
+        // Set focus to story main content for accessibility
+        storyDiv.focus();
+      });
+
+      // Optional: allow pressing enter to submit
+      usernameInput.addEventListener('keypress', (e) => {
+        if(e.key === 'Enter'){
+          submitBtn.click();
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>
